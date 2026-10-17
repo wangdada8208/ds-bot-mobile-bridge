@@ -1,0 +1,4 @@
+# 把手机桥接挂到 Bot 团队旁边。原版 ds-bot 那一行由它自己的 bundle 提供，这里不改它。
+- insert:
+    - id: bot-mobile-bridge
+      name: ds-bot-mobile-bridge

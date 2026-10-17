@@ -1,0 +1,39 @@
+{
+  "name": "ds-bot-mobile-bridge",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Phone bridge for DS Bot: pairs the iOS app with a DS Bot host and serves the mobile API on 127.0.0.1:8788.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "src/",
+    "cordis.patch.yml",
+    "scripts/",
+    "README.zh.md",
+    "README.md"
+  ],
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "ds-bot",
+    "ios",
+    "mobile"
+  ],
+  "dependencies": {
+    "qrcode": "1.5.4",
+    "ws": "8.21.0"
+  },
+  "scripts": {
+    "test": "node --test test/patch.test.mjs",
+    "patch": "node scripts/patch-dsbot.mjs apply",
+    "patch:check": "node scripts/patch-dsbot.mjs check",
+    "patch:revert": "node scripts/patch-dsbot.mjs revert",
+    "pack": "npm pack"
+  }
+}

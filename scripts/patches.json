@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "target": "ds-bot",
+  "description": "挂载 ds-bot 运行时，供手机桥接插件读取；补丁以锚点+校验和匹配，升级后自动重放。",
+  "patches": [
+    {
+      "id": "expose-runtime",
+      "file": "index.js",
+      "why": "apply() 丢弃 createRuntime 的返回值；把 rt 挂到全局 Symbol，第二个插件才读得到。",
+      "anchor": "export function apply(ctx, config = {}) {\n  createRuntime(ctx, config)\n}",
+      "anchorSha256": "149dc81339bb86b0ec9506d37211f4451e927f0b47b92c0eb2d7820ac6d01a4b",
+      "insert": "export function apply(ctx, config = {}) {\n  const rt = createRuntime(ctx, config)\n  Object.defineProperty(globalThis, Symbol.for('ds-bot.runtime'), { value: rt, configurable: true, writable: true })\n}",
+      "marker": "Symbol.for('ds-bot.runtime')"
+    },
+    {
+      "id": "expose-team-call",
+      "file": "src/host/channel.js",
+      "why": "handle 是局部函数，未挂到 rt；手机桥接的 adapter 通过 rt.teamCall(endpoint, payload, signal) 调团队接口。",
+      "anchor": "  // An exact Fetch route on the shared /api channel; the browser authenticates with its session cookie.\n  ctx.effect(() => ctx.connection.fetch.register({",
+      "anchorSha256": "afae46e023a645473500976fb08770872d831786108cdf86f52732b83257eb3b",
+      "insert": "  rt.teamCall = handle\n\n  // An exact Fetch route on the shared /api channel; the browser authenticates with its session cookie.\n  ctx.effect(() => ctx.connection.fetch.register({",
+      "marker": "rt.teamCall = handle"
+    }
+  ]
+}
