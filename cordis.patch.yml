@@ -1,4 +1,17 @@
 # 把手机桥接挂到 Bot 团队旁边。原版 ds-bot 那一行由它自己的 bundle 提供，这里不改它。
+#
+# 注意：DSH 的 patch 是「整体替换 config、不合并嵌套键」，所以这里用 insert 新增一行，
+# 不要去写 - id: bot 的覆盖（那会把原版 bot 的整个 config 换掉）。
 - insert:
     - id: bot-mobile-bridge
       name: ds-bot-mobile-bridge
+      config:
+        mobile:
+          enabled: true
+          # 只监听本机；对外发布要走 Tailscale 或独立子域名，不要直接暴露。
+          host: 127.0.0.1
+          port: 8788
+          # 手机访问用的 HTTPS 地址，默认指向本机。装好后按你的网络路线改这一行：
+          #   Tailscale：https://<机器名>.<tailnet名>.ts.net:8788
+          #   子域名  ：https://bot.<你的域名>
+          publicUrl: http://127.0.0.1:8788

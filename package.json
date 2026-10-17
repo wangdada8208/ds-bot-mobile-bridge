@@ -16,8 +16,14 @@
     "cordis.patch.yml",
     "scripts/",
     "README.zh.md",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
   "keywords": [
     "dsh-plugin",
     "deepseek-harness",
